@@ -1,0 +1,3 @@
+frame layout = 1245, 500
+main(background) color = #edebe6;
+second (font) color = #373a3a;

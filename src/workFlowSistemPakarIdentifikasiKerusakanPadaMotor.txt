@@ -1,0 +1,22 @@
+Sistem pakar identifikasi kerusakan pada motor vespa dengan metode forward chaining
+
+Tujuan di buat nya program ini supaya untuk mengetahui titik kerusakan pada motor vespa bedasarkan basis pengetahuan yang
+di pakari oleh mekaniknya, dan dari sisi user manfaatnya bisa meringkas waktu menjadi lebih efisian karna sudah mengetahui
+titik kerusakannya dan bisa memprepare sebelum kebengkel dari segi ke uangan dan part itu sendiri yang menjadi titik kerusakannya
+
+MENU UTAMA
+menu utama
+
+1. KONSULTASI KERUSAKAN = di sini user akan menjawab beberapa pertanyaan dari keluhan motor yang di rasakan, dan hasil dari jawaban beberapa pertanyaan tadi akan di tampilkan di halaman lihat hasil
+2. LIHAT HASIL = di halaman ini user bisa melihat hasil jawaban yang telah di jawab beberapa pertanyaan sebelumnya di halaman konsultasi kerusakan, dan beberapa sosulusi yang tepat untuk kerusakan yang di rasakan
+3. ABOUT app = menjelaskan apa program ini dan kenapa di buat dan manfaatnya apa
+4. BASIS PENGETAHUAN = halaman dimana user bisa melihat beberapa informasi ciri ciri kerusakan dan kerusakan
+5. HARGA SPAREPART = di mana halaman ini user bisa melihat informasi beberapa harga sparepart 
+5. SIGN ADMIN = menu sign in untuk admin
+
+MENU ADMIN
+setelah mengisi menu admin, akan masuk ke hamalan admin yang mana admin bisa melakukan crud
+
+1. crud kerusakan = di mana admin bisa create,read,update,delete
+2. crud ciri kerusakan = di mana admin bisa create,read,update,delete
+3. crud basis pengetahuan = di mana admin bisa create,read,update,delete dari data ciri kerusakan dan kerusakan
