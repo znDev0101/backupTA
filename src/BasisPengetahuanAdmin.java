@@ -10,10 +10,12 @@
  */
 
 import java.sql.*;
+import java.util.Vector;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumnModel;
 
-public class BasisPengetahuan extends javax.swing.JFrame {
+public final class BasisPengetahuanAdmin extends javax.swing.JFrame {
 
     /**
      * Creates new form BasisPengetahuan
@@ -22,13 +24,14 @@ public class BasisPengetahuan extends javax.swing.JFrame {
     Statement st;
     ResultSet rs;
     Connection cn = database.kerusakandb.configDB();
-    
-    
-    public BasisPengetahuan() {
+    Vector originalTableModel;
+    public BasisPengetahuanAdmin() {
         initComponents();
         showDataBasisPengetahuan();
-        showDataCiriKerusakan();
+        showDataGejalaKerusakan();
         showDataKerusakan();
+        setColumnWidth();
+        originalTableModel = (Vector) ((DefaultTableModel) tblBasisPengetahuan.getModel()).getDataVector().clone();
     }   
 
     /**
@@ -42,40 +45,29 @@ public class BasisPengetahuan extends javax.swing.JFrame {
 
         jPanel1 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
-        jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
-        tableBasisPengetahuan = new javax.swing.JTable();
+        tblBasisPengetahuan = new javax.swing.JTable();
         btnSimpan = new javax.swing.JButton();
         btnEdit = new javax.swing.JButton();
         btnHapus = new javax.swing.JButton();
-        comboBoxCiriKerusakan = new javax.swing.JComboBox<>();
+        jLabel1 = new javax.swing.JLabel();
         comboBoxKerusakan = new javax.swing.JComboBox<>();
+        comboBoxGejalaKerusakan = new javax.swing.JComboBox<>();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        btnKembali = new javax.swing.JButton();
+        txtCariDataTable = new javax.swing.JTextField();
+        btnCariData = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jPanel1.setBackground(new java.awt.Color(243, 242, 246));
+        jPanel1.setBackground(new java.awt.Color(237, 235, 230));
+        jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jPanel2.setBackground(new java.awt.Color(116, 118, 97));
+        jPanel2.setBackground(new java.awt.Color(237, 235, 230));
 
-        jLabel1.setFont(new java.awt.Font("sansserif", 1, 36)); // NOI18N
-        jLabel1.setForeground(new java.awt.Color(243, 242, 246));
-        jLabel1.setText("Basis Pengetahuan");
-
-        jButton1.setFont(new java.awt.Font("sansserif", 1, 12)); // NOI18N
-        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/previous.png"))); // NOI18N
-        jButton1.setText("Kembali");
-        jButton1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        jButton1.setFocusable(false);
-
-        jLabel2.setText("Ciri Kerusakan");
-
-        jLabel3.setText("Nama Kerusakan");
-
-        tableBasisPengetahuan.setModel(new javax.swing.table.DefaultTableModel(
+        tblBasisPengetahuan.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -86,12 +78,12 @@ public class BasisPengetahuan extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        tableBasisPengetahuan.addMouseListener(new java.awt.event.MouseAdapter() {
+        tblBasisPengetahuan.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                tableBasisPengetahuanMouseClicked(evt);
+                tblBasisPengetahuanMouseClicked(evt);
             }
         });
-        jScrollPane2.setViewportView(tableBasisPengetahuan);
+        jScrollPane2.setViewportView(tblBasisPengetahuan);
 
         btnSimpan.setBackground(new java.awt.Color(88, 158, 85));
         btnSimpan.setFont(new java.awt.Font("sansserif", 1, 12)); // NOI18N
@@ -129,127 +121,174 @@ public class BasisPengetahuan extends javax.swing.JFrame {
             }
         });
 
-        comboBoxCiriKerusakan.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "items..." }));
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(55, 58, 58));
+        jLabel1.setText("Basis Pengetahuan");
 
         comboBoxKerusakan.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "items..." }));
+
+        comboBoxGejalaKerusakan.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "items..." }));
+
+        jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jLabel3.setForeground(new java.awt.Color(55, 58, 58));
+        jLabel3.setText("Nama Kerusakan");
+
+        jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(55, 58, 58));
+        jLabel2.setText("Gejala Kerusakan");
+
+        btnKembali.setBackground(new java.awt.Color(237, 235, 230));
+        btnKembali.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        btnKembali.setForeground(new java.awt.Color(55, 58, 58));
+        btnKembali.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/previous.png"))); // NOI18N
+        btnKembali.setText("Kembali");
+        btnKembali.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnKembali.setFocusable(false);
+        btnKembali.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnKembaliActionPerformed(evt);
+            }
+        });
+
+        btnCariData.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnCariData.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/loupe.png"))); // NOI18N
+        btnCariData.setText("Cari");
+        btnCariData.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnCariData.setFocusable(false);
+        btnCariData.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCariDataActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(31, 31, 31)
-                .addComponent(jButton1)
-                .addGap(77, 77, 77)
+                .addGap(44, 44, 44)
+                .addComponent(btnKembali)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel1)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(381, 381, 381))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addContainerGap(115, Short.MAX_VALUE)
+                .addGap(0, 145, Short.MAX_VALUE)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(btnHapus)
-                        .addGap(18, 18, 18)
+                        .addGap(31, 31, 31)
                         .addComponent(btnEdit)
-                        .addGap(27, 27, 27)
+                        .addGap(31, 31, 31)
                         .addComponent(btnSimpan))
-                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addGroup(jPanel2Layout.createSequentialGroup()
-                            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(jLabel2)
-                                .addComponent(jLabel3))
-                            .addGap(123, 123, 123)
-                            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(comboBoxKerusakan, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(comboBoxCiriKerusakan, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 745, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(107, 107, 107))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel2)
+                            .addComponent(jLabel3))
+                        .addGap(75, 75, 75)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(comboBoxGejalaKerusakan, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(comboBoxKerusakan, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 819, Short.MAX_VALUE)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                                .addComponent(txtCariDataTable, javax.swing.GroupLayout.PREFERRED_SIZE, 701, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(btnCariData, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                .addGap(91, 91, 91))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(27, 27, 27)
-                        .addComponent(jButton1)
-                        .addGap(50, 50, 50))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                        .addContainerGap()
+                        .addGap(29, 29, 29)
+                        .addComponent(btnKembali))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(41, 41, 41)
                         .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(comboBoxCiriKerusakan, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(39, 39, 39)
+                    .addComponent(comboBoxGejalaKerusakan, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 41, Short.MAX_VALUE)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(comboBoxKerusakan, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(56, 56, 56)
+                    .addComponent(comboBoxKerusakan, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(31, 31, 31)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtCariDataTable, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnCariData))
+                .addGap(28, 28, 28)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 259, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(49, 49, 49)
+                .addGap(50, 50, 50)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnSimpan)
                     .addComponent(btnEdit)
                     .addComponent(btnHapus))
-                .addContainerGap(74, Short.MAX_VALUE))
+                .addGap(42, 42, 42))
         );
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(131, Short.MAX_VALUE)
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(147, 147, 147))
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-        );
+        jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1245, 700));
 
-        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1245, 700));
+        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1240, 700));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    
+    public void setColumnWidth(){
+        TableColumnModel columnModel = tblBasisPengetahuan.getColumnModel();
+        columnModel.getColumn(0).setPreferredWidth(30);
+        columnModel.getColumn(0).setMaxWidth(30);
+         columnModel.getColumn(0).setMinWidth(30);
+         columnModel.getColumn(1).setPreferredWidth(500);
+        columnModel.getColumn(1).setMaxWidth(500);
+         columnModel.getColumn(1).setMinWidth(500);
+    }
+    
     private void showDataBasisPengetahuan(){
         
         DefaultTableModel model = new DefaultTableModel();
         model.addColumn("id");
-        model.addColumn("Ciri Kerusakan");
+        model.addColumn("Gejala Kerusakan");
         model.addColumn("Kerusakan");
-        tableBasisPengetahuan.setModel(model);
+        tblBasisPengetahuan.setModel(model);
         try {
             String sql = "SELECT * FROM basis_pengetahuan";
             st = cn.createStatement();
             rs = st.executeQuery(sql);
             while(rs.next()){
-                model.addRow(new Object[] { rs.getString("id") , rs.getString("ciri_kerusakan"), rs.getString("nama_kerusakan")});
+                model.addRow(new Object[] { rs.getString("id") , rs.getString( "gejala_kerusakan"), rs.getString("nama_kerusakan")});
             }
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e);
         }
     }
     
-    private void showDataCiriKerusakan(){
+    private void showDataGejalaKerusakan(){
         try {
-            String sql = "SELECT * FROM ciri_kerusakan";
+            String sql = "SELECT * FROM gejala_kerusakan";
             st = cn.createStatement();
             rs = st.executeQuery(sql);
             while(rs.next()){
-                comboBoxCiriKerusakan.addItem(rs.getString("ciri_kerusakan"));
+                String getGejalaKodeKerusakan = rs.getString("kode_gejala_kerusakan");
+                String getGejalaKerusakan = rs.getString("gejala_kerusakan");
+                String gejalaKerusakan = "[" + getGejalaKodeKerusakan+ "] " + getGejalaKerusakan;
+                comboBoxGejalaKerusakan.addItem(gejalaKerusakan);
             }
         } catch (Exception e) {
         }
     }
     
-    private void showDataKerusakan(){
+    public void  showDataKerusakan(){
         try {
-            String sql = "SELECT nama_kerusakan FROM kerusakan";
+            String sql = "SELECT * FROM kerusakan";
             st = cn.createStatement();
             rs = st.executeQuery(sql);
             while(rs.next()){
-                comboBoxKerusakan.addItem(rs.getString("nama_kerusakan"));
+                String getKerusakan = rs.getString("nama_kerusakan");
+                String getKodeKerusakan = rs.getString("kode_kerusakan");
+                String kerusakan = "["+ getKodeKerusakan +"]" + getKerusakan;
+                comboBoxKerusakan.addItem(kerusakan);
             }
         } catch (Exception e) {
         }
@@ -259,17 +298,18 @@ public class BasisPengetahuan extends javax.swing.JFrame {
     private void btnSimpanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSimpanActionPerformed
         // TODO add your handling code here:
         String kerusakan = comboBoxKerusakan.getSelectedItem().toString();
-        String ciriKerusakan = comboBoxCiriKerusakan.getSelectedItem().toString();
-        if(comboBoxCiriKerusakan.getSelectedItem().toString().equals("items...") || comboBoxKerusakan.getSelectedItem().toString().equals("items...")){
+        String gejalaKerusakan = comboBoxGejalaKerusakan.getSelectedItem().toString();
+        if(comboBoxGejalaKerusakan.getSelectedItem().toString().equals("items...") || comboBoxKerusakan.getSelectedItem().toString().equals("items...")){
             JOptionPane.showMessageDialog(null, "ANDA BELUM MEMILIH SAMA SEKALI");
         }else{
             try {
-            String sql = "INSERT INTO basis_pengetahuan VALUES (id, '" + ciriKerusakan + "','" + kerusakan + "')";
+            String sql = "INSERT INTO basis_pengetahuan VALUES (id, '" + gejalaKerusakan + "','" + kerusakan + "')";
             st = cn.createStatement();
             st.executeUpdate(sql);
             JOptionPane.showMessageDialog(null, "DATA BERHASIL DI SIMPAN");
             showDataBasisPengetahuan();
             resetComboBox();
+            setColumnWidth();
         } catch (Exception e) {
             JOptionPane.showConfirmDialog(null, e);
         }
@@ -278,15 +318,17 @@ public class BasisPengetahuan extends javax.swing.JFrame {
 
     private void btnEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditActionPerformed
         // TODO add your handling code here:
-       String id = tableBasisPengetahuan.getValueAt(tableBasisPengetahuan.getSelectedRow(),0).toString();
-       String ciriKerusakan = comboBoxCiriKerusakan.getSelectedItem().toString();
+       String id = tblBasisPengetahuan.getValueAt(tblBasisPengetahuan.getSelectedRow(),0).toString();
+       String gejalaKerusakan = comboBoxGejalaKerusakan.getSelectedItem().toString();
        String kerusakan = comboBoxKerusakan.getSelectedItem().toString();
         try {
-            String sql = "UPDATE basis_pengetahuan SET ciri_kerusakan = '" + ciriKerusakan + "', nama_kerusakan = '" + kerusakan + "' WHERE id = '" + id +  "'  " ;
+            String sql = "UPDATE basis_pengetahuan SET gejala_kerusakan = '" + gejalaKerusakan + "', nama_kerusakan = '" + kerusakan + "' WHERE id = '" + id +  "'  " ;
             st = cn.createStatement();
             st.executeUpdate(sql);
             JOptionPane.showMessageDialog(null, "DATA BERHASIL DI UBAH");
+            resetComboBox();
             showDataBasisPengetahuan();
+            setColumnWidth();
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e);
         }
@@ -297,30 +339,58 @@ public class BasisPengetahuan extends javax.swing.JFrame {
         int confirm = JOptionPane.showConfirmDialog(null, "Yakin Data mau di hapus?");
         if(confirm == 0){
          try {
-             String id = tableBasisPengetahuan.getValueAt(tableBasisPengetahuan.getSelectedRow(),0).toString();
+             String id = tblBasisPengetahuan.getValueAt(tblBasisPengetahuan.getSelectedRow(),0).toString();
             String sql = "DELETE FROM basis_pengetahuan WHERE id = '" + id + "'";
             st.executeUpdate(sql);
             JOptionPane.showMessageDialog(null, "DATA BERHASIL DI HAPUS");
             showDataBasisPengetahuan();
             resetComboBox();
+            setColumnWidth();
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e);
         }
         }
     }//GEN-LAST:event_btnHapusActionPerformed
 
-    private void resetComboBox(){
-        comboBoxCiriKerusakan.setSelectedItem("items...");
+    public void resetComboBox(){
+        comboBoxGejalaKerusakan.setSelectedItem("items...");
         comboBoxKerusakan.setSelectedItem("items...");
     }
     
-    private void tableBasisPengetahuanMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableBasisPengetahuanMouseClicked
+    private void tblBasisPengetahuanMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblBasisPengetahuanMouseClicked
         // TODO add your handling code here:
-      tableBasisPengetahuan.getValueAt(tableBasisPengetahuan.getSelectedRow(),0);
-      comboBoxCiriKerusakan.setSelectedItem(tableBasisPengetahuan.getValueAt(tableBasisPengetahuan.getSelectedRow(),1).toString());
-      comboBoxKerusakan.setSelectedItem(tableBasisPengetahuan.getValueAt(tableBasisPengetahuan.getSelectedRow(),2).toString());
+      tblBasisPengetahuan.getValueAt(tblBasisPengetahuan.getSelectedRow(),0);
+      comboBoxGejalaKerusakan.setSelectedItem(tblBasisPengetahuan.getValueAt(tblBasisPengetahuan.getSelectedRow(),1).toString());
+      comboBoxKerusakan.setSelectedItem(tblBasisPengetahuan.getValueAt(tblBasisPengetahuan.getSelectedRow(),2).toString());
 
-    }//GEN-LAST:event_tableBasisPengetahuanMouseClicked
+    }//GEN-LAST:event_tblBasisPengetahuanMouseClicked
+
+    private void btnKembaliActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnKembaliActionPerformed
+        // TODO add your handling code here:
+        new MenuAdmin().show();
+        this.dispose();
+    }//GEN-LAST:event_btnKembaliActionPerformed
+
+      private void tampilDataTabel(String cariData){
+        DefaultTableModel model =  (DefaultTableModel) tblBasisPengetahuan.getModel();
+        model.setRowCount(0);
+        for(Object rows : originalTableModel ){
+            Vector rowVector = (Vector) rows;
+            for(Object column : rowVector){
+                if(column.toString().contains(cariData)){
+                    model.addRow(rowVector);
+                    break;
+                }
+            }
+        }
+      
+    }
+    
+    private void btnCariDataActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCariDataActionPerformed
+        // TODO add your handling code here:
+        String cariDataTabel = txtCariDataTable.getText();
+        tampilDataTabel(cariDataTabel);
+    }//GEN-LAST:event_btnCariDataActionPerformed
 
     /**
      * @param args the command line arguments
@@ -339,37 +409,40 @@ public class BasisPengetahuan extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(BasisPengetahuan.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(BasisPengetahuanAdmin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(BasisPengetahuan.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(BasisPengetahuanAdmin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(BasisPengetahuan.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(BasisPengetahuanAdmin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(BasisPengetahuan.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(BasisPengetahuanAdmin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new BasisPengetahuan().setVisible(true);
+                new BasisPengetahuanAdmin().setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnCariData;
     private javax.swing.JButton btnEdit;
     private javax.swing.JButton btnHapus;
+    private javax.swing.JButton btnKembali;
     private javax.swing.JButton btnSimpan;
-    private javax.swing.JComboBox<String> comboBoxCiriKerusakan;
+    private javax.swing.JComboBox<String> comboBoxGejalaKerusakan;
     private javax.swing.JComboBox<String> comboBoxKerusakan;
-    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTable tableBasisPengetahuan;
+    private javax.swing.JTable tblBasisPengetahuan;
+    private javax.swing.JTextField txtCariDataTable;
     // End of variables declaration//GEN-END:variables
 }

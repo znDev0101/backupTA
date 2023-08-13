@@ -1,13 +1,5 @@
 
 import java.sql.Connection;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import net.sf.jasperreports.engine.JRException;
-import net.sf.jasperreports.engine.JasperCompileManager;
-import net.sf.jasperreports.engine.JasperFillManager;
-import net.sf.jasperreports.engine.JasperPrint;
-import net.sf.jasperreports.engine.JasperReport;
-import net.sf.jasperreports.view.JasperViewer;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -46,10 +38,11 @@ public class MenuUtama extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         btnKonsultasi1 = new javax.swing.JButton();
         btnKonsultasi = new javax.swing.JButton();
-        btnKonsultasi2 = new javax.swing.JButton();
+        btnBasisPengetahuan = new javax.swing.JButton();
         btnLogin = new javax.swing.JButton();
         btnKonsultasi4 = new javax.swing.JButton();
         btnTurnOff = new javax.swing.JButton();
+        btnRules = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
 
@@ -65,11 +58,11 @@ public class MenuUtama extends javax.swing.JFrame {
         jLabel2.setBackground(new java.awt.Color(243, 242, 246));
         jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(237, 235, 230));
-        jLabel2.setText("Sistem Pakar Identifikasi");
+        jLabel2.setText("Sistem Pakar Diagnosa");
 
         jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(237, 235, 230));
-        jLabel3.setText("Kerusakan motor vespa 2t");
+        jLabel3.setText("Kerusakan motor vespa 2 tak");
 
         btnKonsultasi1.setBackground(new java.awt.Color(237, 235, 230));
         btnKonsultasi1.setFont(new java.awt.Font("sansserif", 1, 18)); // NOI18N
@@ -88,23 +81,33 @@ public class MenuUtama extends javax.swing.JFrame {
         btnKonsultasi.setFont(new java.awt.Font("sansserif", 1, 18)); // NOI18N
         btnKonsultasi.setForeground(new java.awt.Color(55, 58, 58));
         btnKonsultasi.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/spare-parts.png"))); // NOI18N
-        btnKonsultasi.setText("Sparepart");
+        btnKonsultasi.setText("Spareparts");
         btnKonsultasi.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btnKonsultasi.setFocusable(false);
+        btnKonsultasi.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnKonsultasiActionPerformed(evt);
+            }
+        });
 
-        btnKonsultasi2.setBackground(new java.awt.Color(237, 235, 230));
-        btnKonsultasi2.setFont(new java.awt.Font("sansserif", 1, 18)); // NOI18N
-        btnKonsultasi2.setForeground(new java.awt.Color(55, 58, 58));
-        btnKonsultasi2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/book.png"))); // NOI18N
-        btnKonsultasi2.setText("Basis Pengetahuan");
-        btnKonsultasi2.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        btnKonsultasi2.setFocusable(false);
+        btnBasisPengetahuan.setBackground(new java.awt.Color(237, 235, 230));
+        btnBasisPengetahuan.setFont(new java.awt.Font("sansserif", 1, 18)); // NOI18N
+        btnBasisPengetahuan.setForeground(new java.awt.Color(55, 58, 58));
+        btnBasisPengetahuan.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/book.png"))); // NOI18N
+        btnBasisPengetahuan.setText("Basis Pengetahuan");
+        btnBasisPengetahuan.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnBasisPengetahuan.setFocusable(false);
+        btnBasisPengetahuan.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBasisPengetahuanActionPerformed(evt);
+            }
+        });
 
         btnLogin.setBackground(new java.awt.Color(237, 235, 230));
         btnLogin.setFont(new java.awt.Font("sansserif", 1, 18)); // NOI18N
         btnLogin.setForeground(new java.awt.Color(55, 58, 58));
         btnLogin.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/user.png"))); // NOI18N
-        btnLogin.setText("Login");
+        btnLogin.setText("Sign In");
         btnLogin.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btnLogin.setFocusable(false);
         btnLogin.addActionListener(new java.awt.event.ActionListener() {
@@ -136,19 +139,29 @@ public class MenuUtama extends javax.swing.JFrame {
             }
         });
 
+        btnRules.setBackground(new java.awt.Color(237, 235, 230));
+        btnRules.setFont(new java.awt.Font("sansserif", 1, 18)); // NOI18N
+        btnRules.setForeground(new java.awt.Color(55, 58, 58));
+        btnRules.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/rule.png"))); // NOI18N
+        btnRules.setText("Aturan");
+        btnRules.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnRules.setFocusable(false);
+        btnRules.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRulesActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
-                .addContainerGap(37, Short.MAX_VALUE)
+                .addContainerGap(58, Short.MAX_VALUE)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                        .addComponent(jLabel2)
-                        .addGap(99, 99, 99))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 316, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(77, 77, 77))
+                        .addComponent(btnTurnOff, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(34, 34, 34))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(btnKonsultasi4, javax.swing.GroupLayout.PREFERRED_SIZE, 401, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -158,39 +171,47 @@ public class MenuUtama extends javax.swing.JFrame {
                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                     .addComponent(btnKonsultasi, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel3Layout.createSequentialGroup()
-                                    .addComponent(btnKonsultasi2, javax.swing.GroupLayout.PREFERRED_SIZE, 252, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(btnBasisPengetahuan, javax.swing.GroupLayout.PREFERRED_SIZE, 252, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addGap(18, 18, 18)
-                                    .addComponent(btnLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                        .addGap(34, 34, 34))
+                                    .addComponent(btnLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(btnRules, javax.swing.GroupLayout.PREFERRED_SIZE, 401, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(61, 61, 61))))
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addGap(91, 91, 91)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                        .addComponent(btnTurnOff, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(34, 34, 34))))
+                        .addComponent(jLabel2)
+                        .addGap(38, 38, 38))
+                    .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.TRAILING))
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGap(35, 35, 35)
+                .addGap(43, 43, 43)
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel3)
-                .addGap(117, 117, 117)
+                .addGap(48, 48, 48)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnKonsultasi, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnKonsultasi1, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(36, 36, 36)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnKonsultasi2, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnBasisPengetahuan, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(33, 33, 33)
+                .addGap(32, 32, 32)
+                .addComponent(btnRules, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
                 .addComponent(btnKonsultasi4, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 144, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 137, Short.MAX_VALUE)
                 .addComponent(btnTurnOff, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(26, 26, 26))
         );
 
-        jPanel1.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(770, 0, -1, 700));
+        jPanel1.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(722, 0, 520, 700));
 
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/vespa.jpg"))); // NOI18N
+        jLabel1.setIcon(new javax.swing.ImageIcon("C:\\Users\\ZULFA\\Downloads\\vespa1.jpg")); // NOI18N
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -198,15 +219,14 @@ public class MenuUtama extends javax.swing.JFrame {
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 758, Short.MAX_VALUE)
-                .addContainerGap())
+                .addComponent(jLabel1)
+                .addContainerGap(44, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 700, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 706, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
 
         jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 770, 700));
@@ -236,6 +256,24 @@ public class MenuUtama extends javax.swing.JFrame {
         // TODO add your handling code here:
         this.dispose();
     }//GEN-LAST:event_btnTurnOffActionPerformed
+
+    private void btnBasisPengetahuanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBasisPengetahuanActionPerformed
+        // TODO add your handling code here:
+        new BasisPengetahuanMenuUtama().show();
+        this.dispose();
+    }//GEN-LAST:event_btnBasisPengetahuanActionPerformed
+
+    private void btnKonsultasiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnKonsultasiActionPerformed
+        // TODO add your handling code here:
+        new Spareparts().show();
+        this.dispose();
+    }//GEN-LAST:event_btnKonsultasiActionPerformed
+
+    private void btnRulesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRulesActionPerformed
+        // TODO add your handling code here:
+        new Aturan(0).show();
+        this.dispose();
+    }//GEN-LAST:event_btnRulesActionPerformed
 
     /**
      * @param args the command line arguments
@@ -274,11 +312,12 @@ public class MenuUtama extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnBasisPengetahuan;
     private javax.swing.JButton btnKonsultasi;
     private javax.swing.JButton btnKonsultasi1;
-    private javax.swing.JButton btnKonsultasi2;
     private javax.swing.JButton btnKonsultasi4;
     private javax.swing.JButton btnLogin;
+    private javax.swing.JButton btnRules;
     private javax.swing.JButton btnTurnOff;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;

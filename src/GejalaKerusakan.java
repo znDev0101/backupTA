@@ -12,8 +12,10 @@
 import java.sql.*;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumnModel;
+import java.util.Vector;
 
-public class CiriKerusakan extends javax.swing.JFrame {
+public class GejalaKerusakan extends javax.swing.JFrame {
 
     /**
      * Creates new form CiriKerusakan
@@ -22,10 +24,13 @@ public class CiriKerusakan extends javax.swing.JFrame {
     Statement st;
     ResultSet rs;
     Connection cn = database.kerusakandb.configDB();
+    Vector originalTableModel;
     
-    public CiriKerusakan() {
+    public GejalaKerusakan() {
         initComponents();
         showDataCiriKerusakan();
+        setColumnWidth();
+        originalTableModel = (Vector) ((DefaultTableModel) tblGejalaKerusakan.getModel()).getDataVector().clone();
     }
 
     /**
@@ -40,41 +45,55 @@ public class CiriKerusakan extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
+        btnKembali = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
-        tableCiriKerusakan = new javax.swing.JTable();
+        tblGejalaKerusakan = new javax.swing.JTable();
         btnSimpan = new javax.swing.JButton();
         btnEdit = new javax.swing.JButton();
         btnReset = new javax.swing.JButton();
         btnHapus = new javax.swing.JButton();
-        txtKodeCiriKerusakan = new javax.swing.JTextField();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        txtCiriKerusakan = new javax.swing.JTextArea();
+        txtKodeGejalaKerusakan = new javax.swing.JTextField();
+        txtCariDataTable = new javax.swing.JTextField();
+        btnCariData = new javax.swing.JButton();
+        txtGejalaKerusakan = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jPanel1.setBackground(new java.awt.Color(243, 242, 246));
+        jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jPanel2.setBackground(new java.awt.Color(116, 118, 97));
+        jPanel2.setBackground(new java.awt.Color(237, 235, 230));
+        jPanel2.setForeground(new java.awt.Color(55, 58, 58));
 
         jLabel1.setFont(new java.awt.Font("sansserif", 1, 36)); // NOI18N
-        jLabel1.setForeground(new java.awt.Color(243, 242, 246));
-        jLabel1.setText("Ciri Kerusakan");
+        jLabel1.setForeground(new java.awt.Color(55, 58, 58));
+        jLabel1.setText("Gejala Kerusakan");
 
-        jButton1.setFont(new java.awt.Font("sansserif", 1, 12)); // NOI18N
-        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/previous.png"))); // NOI18N
-        jButton1.setText("Kembali");
-        jButton1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        jButton1.setFocusable(false);
+        btnKembali.setBackground(new java.awt.Color(237, 235, 230));
+        btnKembali.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        btnKembali.setForeground(new java.awt.Color(55, 58, 58));
+        btnKembali.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/previous.png"))); // NOI18N
+        btnKembali.setText("Kembali");
+        btnKembali.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnKembali.setFocusable(false);
+        btnKembali.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnKembaliActionPerformed(evt);
+            }
+        });
 
-        jLabel2.setText("Kode Ciri Kerusakan");
+        jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(55, 58, 58));
+        jLabel2.setText("Kode Gejala Kerusakan");
 
-        jLabel3.setText("Ciri Kerusakan");
+        jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jLabel3.setForeground(new java.awt.Color(55, 58, 58));
+        jLabel3.setText("Gejala Kerusakan");
 
-        tableCiriKerusakan.setModel(new javax.swing.table.DefaultTableModel(
+        tblGejalaKerusakan.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -85,15 +104,15 @@ public class CiriKerusakan extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        tableCiriKerusakan.addMouseListener(new java.awt.event.MouseAdapter() {
+        tblGejalaKerusakan.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                tableCiriKerusakanMouseClicked(evt);
+                tblGejalaKerusakanMouseClicked(evt);
             }
         });
-        jScrollPane2.setViewportView(tableCiriKerusakan);
+        jScrollPane2.setViewportView(tblGejalaKerusakan);
 
         btnSimpan.setBackground(new java.awt.Color(88, 158, 85));
-        btnSimpan.setFont(new java.awt.Font("sansserif", 1, 12)); // NOI18N
+        btnSimpan.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         btnSimpan.setForeground(new java.awt.Color(243, 242, 246));
         btnSimpan.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/icons8-save-20.png"))); // NOI18N
         btnSimpan.setText("Simpan");
@@ -105,7 +124,7 @@ public class CiriKerusakan extends javax.swing.JFrame {
         });
 
         btnEdit.setBackground(new java.awt.Color(213, 142, 29));
-        btnEdit.setFont(new java.awt.Font("sansserif", 1, 12)); // NOI18N
+        btnEdit.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         btnEdit.setForeground(new java.awt.Color(243, 242, 246));
         btnEdit.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/icons8-edit-20 (1).png"))); // NOI18N
         btnEdit.setText("Edit");
@@ -116,7 +135,7 @@ public class CiriKerusakan extends javax.swing.JFrame {
             }
         });
 
-        btnReset.setFont(new java.awt.Font("sansserif", 1, 12)); // NOI18N
+        btnReset.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         btnReset.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/icons8-reset-20.png"))); // NOI18N
         btnReset.setText("Reset");
         btnReset.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
@@ -127,7 +146,7 @@ public class CiriKerusakan extends javax.swing.JFrame {
         });
 
         btnHapus.setBackground(new java.awt.Color(244, 67, 54));
-        btnHapus.setFont(new java.awt.Font("sansserif", 1, 12)); // NOI18N
+        btnHapus.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         btnHapus.setForeground(new java.awt.Color(243, 242, 246));
         btnHapus.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/icons8-remove-20.png"))); // NOI18N
         btnHapus.setText("Hapus");
@@ -138,130 +157,140 @@ public class CiriKerusakan extends javax.swing.JFrame {
             }
         });
 
-        txtCiriKerusakan.setColumns(20);
-        txtCiriKerusakan.setRows(5);
-        jScrollPane1.setViewportView(txtCiriKerusakan);
+        btnCariData.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnCariData.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/loupe.png"))); // NOI18N
+        btnCariData.setText("Cari");
+        btnCariData.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnCariData.setFocusable(false);
+        btnCariData.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCariDataActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(31, 31, 31)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGap(29, 29, 29)
+                .addComponent(btnKembali)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel1)
+                .addGap(342, 342, 342))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnHapus)
+                        .addGap(80, 80, 80)
+                        .addComponent(btnReset)
+                        .addGap(107, 107, 107)
+                        .addComponent(btnEdit)
+                        .addGap(91, 91, 91)
+                        .addComponent(btnSimpan))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(152, 152, 152)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel2)
-                            .addComponent(jLabel3))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(txtKodeCiriKerusakan, javax.swing.GroupLayout.DEFAULT_SIZE, 450, Short.MAX_VALUE)
-                            .addComponent(jScrollPane1)))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel3)
+                            .addComponent(jLabel2))
+                        .addGap(34, 34, 34)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addComponent(btnHapus)
-                                .addGap(80, 80, 80)
-                                .addComponent(btnReset)
-                                .addGap(107, 107, 107)
-                                .addComponent(btnEdit)
-                                .addGap(91, 91, 91)
-                                .addComponent(btnSimpan))
-                            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addGroup(jPanel2Layout.createSequentialGroup()
-                                    .addComponent(jButton1)
-                                    .addGap(134, 134, 134)
-                                    .addComponent(jLabel1))
-                                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 619, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(0, 0, Short.MAX_VALUE)))
-                .addGap(36, 36, 36))
+                                .addComponent(txtCariDataTable, javax.swing.GroupLayout.PREFERRED_SIZE, 704, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 15, Short.MAX_VALUE)
+                                .addComponent(btnCariData, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(txtKodeGejalaKerusakan)
+                            .addComponent(txtGejalaKerusakan))))
+                .addGap(100, 100, 100))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(40, 40, 40)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(43, 43, 43)
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(27, 27, 27)
-                        .addComponent(jButton1)))
-                .addGap(28, 28, 28)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnKembali))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtKodeCiriKerusakan, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(33, 33, 33)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(txtKodeGejalaKerusakan, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(27, 27, 27)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 29, Short.MAX_VALUE)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 268, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(30, 30, 30)
+                    .addComponent(txtGejalaKerusakan, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtCariDataTable, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnCariData))
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 352, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnSimpan)
                     .addComponent(btnEdit)
                     .addComponent(btnReset)
                     .addComponent(btnHapus))
-                .addGap(53, 53, 53))
+                .addGap(29, 29, 29))
         );
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(281, Short.MAX_VALUE)
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(278, 278, 278))
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-        );
+        jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(2, 0, 1245, -1));
 
-        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1245, 700));
+        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1240, 700));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+     public void setColumnWidth(){
+        TableColumnModel columnModel = tblGejalaKerusakan.getColumnModel();
+        columnModel.getColumn(0).setPreferredWidth(30);
+        columnModel.getColumn(0).setMaxWidth(30);
+         columnModel.getColumn(0).setMinWidth(30);
+         columnModel.getColumn(1).setPreferredWidth(200);
+        columnModel.getColumn(1).setMaxWidth(200);
+         columnModel.getColumn(1).setMinWidth(200);
+    }
+    
     private void showDataCiriKerusakan(){
          DefaultTableModel model = new DefaultTableModel();
         model.addColumn("Id");
-        model.addColumn("Kode Ciri Kerusakan");
-        model.addColumn("Ciri Kerusakan");
-        tableCiriKerusakan.setModel(model);
+        model.addColumn("Kode Gejala Kerusakan");
+        model.addColumn("Gejala Kerusakan");
+        tblGejalaKerusakan.setModel(model);
         try {
             st = cn.createStatement();
-            String sql = "SELECT * FROM ciri_kerusakan";
+            String sql = "SELECT * FROM gejala_kerusakan";
             rs = st.executeQuery(sql);
             while(rs.next()){
-                model.addRow(new Object[]{rs.getString("id") , rs.getString("kode_ciri_kerusakan") , rs.getString("ciri_kerusakan")});
+                model.addRow(new Object[]{rs.getString("id") , rs.getString("kode_gejala_kerusakan") , rs.getString("gejala_kerusakan")});
             }
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, "GAGAL MENAMPILKAN DATA");
         }
     }
     
-    private void tableCiriKerusakanMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableCiriKerusakanMouseClicked
+    private void tblGejalaKerusakanMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblGejalaKerusakanMouseClicked
         // TODO add your handling code here:
-        tableCiriKerusakan.getValueAt(tableCiriKerusakan.getSelectedRow(),0);
-        txtKodeCiriKerusakan.setText(tableCiriKerusakan.getValueAt(tableCiriKerusakan.getSelectedRow(),1).toString());
-        txtCiriKerusakan.setText(tableCiriKerusakan.getValueAt(tableCiriKerusakan.getSelectedRow(),2).toString());
-    }//GEN-LAST:event_tableCiriKerusakanMouseClicked
+        tblGejalaKerusakan.getValueAt(tblGejalaKerusakan.getSelectedRow(),0);
+        txtKodeGejalaKerusakan.setText(tblGejalaKerusakan.getValueAt(tblGejalaKerusakan.getSelectedRow(),1).toString());
+        txtGejalaKerusakan.setText(tblGejalaKerusakan.getValueAt(tblGejalaKerusakan.getSelectedRow(),2).toString());
+    }//GEN-LAST:event_tblGejalaKerusakanMouseClicked
 
     private void btnSimpanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSimpanActionPerformed
         // TODO add your handling code here:
-        String kodeCiriKerusakan = txtKodeCiriKerusakan.getText();
-        String ciriKerusakan = txtCiriKerusakan.getText();
-        if(ciriKerusakan.equals("") || kodeCiriKerusakan.equals("")){
+        String kodeGejalaKerusakan = txtKodeGejalaKerusakan.getText();
+        String gejalaKerusakan = txtGejalaKerusakan.getText();
+        if(gejalaKerusakan.equals("") || kodeGejalaKerusakan.equals("")){
             JOptionPane.showMessageDialog(null, "DATA TIDAK BOLEH KOSONG", "PERINGATAN" , JOptionPane.WARNING_MESSAGE);
         }else{
             try {
-                String sql = "INSERT INTO ciri_kerusakan VALUES ( id,'" + kodeCiriKerusakan + "'  , '" + ciriKerusakan + "')";
+                String sql = "INSERT INTO gejala_kerusakan VALUES ( id,'" + kodeGejalaKerusakan + "'  , '" + gejalaKerusakan + "')";
                 st = cn.createStatement();
                 st.executeUpdate(sql);
                 reset();
                 showDataCiriKerusakan();
+                setColumnWidth();
                 JOptionPane.showMessageDialog(null, "DATA BERHASIL DI SIMPAN");
             } catch (Exception e) {
                 JOptionPane.showMessageDialog(null, "DATA GAGAL DI SIMPAN");
@@ -273,15 +302,16 @@ public class CiriKerusakan extends javax.swing.JFrame {
 
     private void btnEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditActionPerformed
         // TODO add your handling code here:
-        String id = tableCiriKerusakan.getValueAt(tableCiriKerusakan.getSelectedRow(),0).toString();
-        String kodeCiriKerusakan = txtKodeCiriKerusakan.getText();
-        String ciriKerusakan = txtCiriKerusakan.getText();
+        String id = tblGejalaKerusakan.getValueAt(tblGejalaKerusakan.getSelectedRow(),0).toString();
+        String kodeGejalaKerusakan = txtKodeGejalaKerusakan.getText();
+        String gejalaKerusakan = txtGejalaKerusakan.getText();
         try {
             st = cn.createStatement();
-            String sql = "UPDATE ciri_kerusakan SET kode_ciri_kerusakan = '" + kodeCiriKerusakan + "',  ciri_kerusakan = '" + ciriKerusakan + "' WHERE id = '" + id + "'";
+            String sql = "UPDATE gejala_kerusakan SET kode_gejala_kerusakan = '" + kodeGejalaKerusakan + "',  gejala_kerusakan = '" + gejalaKerusakan + "' WHERE id = '" + id + "'";
             st.executeUpdate(sql);
             JOptionPane.showMessageDialog(null, "DATA BERHASIL DI UBAH");
             showDataCiriKerusakan();
+            setColumnWidth();
             reset();
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e);
@@ -290,8 +320,8 @@ public class CiriKerusakan extends javax.swing.JFrame {
 
     private void btnResetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnResetActionPerformed
         // TODO add your handling code here:
-        txtKodeCiriKerusakan.setText("");
-        txtCiriKerusakan.setText("");
+        txtKodeGejalaKerusakan.setText("");
+        txtGejalaKerusakan.setText("");
     }//GEN-LAST:event_btnResetActionPerformed
 
     private void btnHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHapusActionPerformed
@@ -301,11 +331,12 @@ public class CiriKerusakan extends javax.swing.JFrame {
 
         if(confirm == 0){
             try {
-                String id = tableCiriKerusakan.getValueAt(tableCiriKerusakan.getSelectedRow(),0).toString();
+                String id = tblGejalaKerusakan.getValueAt(tblGejalaKerusakan.getSelectedRow(),0).toString();
                 String sql = "DELETE FROM ciri_kerusakan WHERE id = '" + id + "'";
                 st.executeUpdate(sql);
                 JOptionPane.showMessageDialog(null, "Data Berhasil di hapus");
                 reset();
+                setColumnWidth();
                 showDataCiriKerusakan();
             } catch (Exception e) {
                 JOptionPane.showMessageDialog(null, e);
@@ -313,9 +344,36 @@ public class CiriKerusakan extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnHapusActionPerformed
 
+    private void btnKembaliActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnKembaliActionPerformed
+        // TODO add your handling code here:
+        new MenuAdmin().show();
+        this.dispose();
+    }//GEN-LAST:event_btnKembaliActionPerformed
+
+     private void tampilDataTabel(String cariData){
+        DefaultTableModel model =  (DefaultTableModel) tblGejalaKerusakan.getModel();
+        model.setRowCount(0);
+        for(Object rows : originalTableModel ){
+            Vector rowVector = (Vector) rows;
+            for(Object column : rowVector){
+                if(column.toString().contains(cariData)){
+                    model.addRow(rowVector);
+                    break;
+                }
+            }
+        }
+      
+    }
+    
+    private void btnCariDataActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCariDataActionPerformed
+        // TODO add your handling code here:
+        String cariDataTabel = txtCariDataTable.getText();
+        tampilDataTabel(cariDataTabel);
+    }//GEN-LAST:event_btnCariDataActionPerformed
+
     private void reset(){
-        txtKodeCiriKerusakan.setText("");
-        txtCiriKerusakan.setText("");
+        txtKodeGejalaKerusakan.setText("");
+        txtGejalaKerusakan.setText("");
     }
     
     
@@ -336,39 +394,41 @@ public class CiriKerusakan extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(CiriKerusakan.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(GejalaKerusakan.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(CiriKerusakan.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(GejalaKerusakan.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(CiriKerusakan.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(GejalaKerusakan.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(CiriKerusakan.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(GejalaKerusakan.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new CiriKerusakan().setVisible(true);
+                new GejalaKerusakan().setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnCariData;
     private javax.swing.JButton btnEdit;
     private javax.swing.JButton btnHapus;
+    private javax.swing.JButton btnKembali;
     private javax.swing.JButton btnReset;
     private javax.swing.JButton btnSimpan;
-    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
-    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTable tableCiriKerusakan;
-    private javax.swing.JTextArea txtCiriKerusakan;
-    private javax.swing.JTextField txtKodeCiriKerusakan;
+    private javax.swing.JTable tblGejalaKerusakan;
+    private javax.swing.JTextField txtCariDataTable;
+    private javax.swing.JTextField txtGejalaKerusakan;
+    private javax.swing.JTextField txtKodeGejalaKerusakan;
     // End of variables declaration//GEN-END:variables
 }

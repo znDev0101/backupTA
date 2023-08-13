@@ -1,3 +1,8 @@
-frame layout = 1245, 500
+frame layout = 1245, 700
 main(background) color = #edebe6;
 second (font) color = #373a3a;
+example number phone = 081334828293;
+
+Note!!!cx
+Aturan halaman user
+About App

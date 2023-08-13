@@ -18,8 +18,8 @@ public class kerusakandb {
             String url = "jdbc:mysql://localhost:3306/kerusakandb";
             String user = "root";
             String pass = "";
-            Class.forName("com.mysql.jdbc.Driver");
-            DriverManager.registerDriver(new com.mysql.jdbc.Driver());
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            DriverManager.registerDriver(new com.mysql.cj.jdbc.Driver());
            Connection cn = DriverManager.getConnection(url,user,pass);
               return cn;
         }catch(ClassNotFoundException | SQLException e){

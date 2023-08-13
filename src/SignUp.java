@@ -89,11 +89,11 @@ public class SignUp extends javax.swing.JFrame {
 
         jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(55, 58, 58));
-        jLabel3.setText("Firstname");
+        jLabel3.setText("Nama depan");
 
         jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel4.setForeground(new java.awt.Color(55, 58, 58));
-        jLabel4.setText("Lastname");
+        jLabel4.setText("Nama belakang");
 
         jLabel5.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel5.setForeground(new java.awt.Color(55, 58, 58));
@@ -101,7 +101,7 @@ public class SignUp extends javax.swing.JFrame {
 
         jLabel6.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel6.setForeground(new java.awt.Color(55, 58, 58));
-        jLabel6.setText("Phone number");
+        jLabel6.setText("Nomor telepon");
 
         jLabel8.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel8.setForeground(new java.awt.Color(55, 58, 58));
@@ -111,9 +111,9 @@ public class SignUp extends javax.swing.JFrame {
         jLabel9.setForeground(new java.awt.Color(55, 58, 58));
         jLabel9.setText("Re-Password");
 
-        btnSignUp.setBackground(new java.awt.Color(55, 58, 58));
+        btnSignUp.setBackground(new java.awt.Color(237, 235, 230));
         btnSignUp.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        btnSignUp.setForeground(new java.awt.Color(237, 235, 230));
+        btnSignUp.setForeground(new java.awt.Color(55, 58, 58));
         btnSignUp.setText("Sign Up");
         btnSignUp.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btnSignUp.addActionListener(new java.awt.event.ActionListener() {
@@ -233,7 +233,7 @@ public class SignUp extends javax.swing.JFrame {
         String Username = txtUserName.getText();
         String Pass = String.valueOf(txtPassword.getPassword());
         String ConfirmPass = String.valueOf(txtRePassword.getPassword());
-        String sql = "INSERT INTO data_admin (`firstname`,`lastname`,`phone_number`,`email`,`username`,`password`) VALUES(?,?,?,?,?,?)";
+        String sql = "INSERT INTO data_admin (`nama_depan`,`nama_belakang`,`nomor_telepon`,`email`,`username`,`password`) VALUES(?,?,?,?,?,?)";
         String cekUsername = "SELECT * FROM data_admin WHERE username= '"+ Username +"' ";
         try{
             st = cn.createStatement();

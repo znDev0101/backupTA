@@ -9,52 +9,42 @@
  * @author ZULFA
  */
 
-import java.awt.List;
-import java.io.File;
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
 import javax.swing.*;
 import java.sql.*;
-import java.util.Collections;
-import net.sf.jasperreports.engine.JRDataSource;
-import net.sf.jasperreports.engine.JREmptyDataSource;
-import net.sf.jasperreports.engine.JRParameter;
-import net.sf.jasperreports.engine.JRResultSetDataSource;
+import java.util.HashMap;
+import java.util.Map;
 import net.sf.jasperreports.engine.JasperCompileManager;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
-import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
-import net.sf.jasperreports.engine.data.JRMapCollectionDataSource;
-import net.sf.jasperreports.engine.design.JRDesignQuery;
-import net.sf.jasperreports.engine.design.JasperDesign;
-import net.sf.jasperreports.engine.util.JRLoader;
-import net.sf.jasperreports.engine.xml.JRXmlLoader;
 import net.sf.jasperreports.view.JasperViewer;
 
-public class HasilKonsultasi extends javax.swing.JFrame {
+public class HasilDiagnosa extends javax.swing.JFrame {
 
     /**
      * Creates new form HasilKonsultasi
      */
-    
-   String resultDiagnosa = null;
    Statement st;
    ResultSet rs;
    Connection cn = database.kerusakandb.configDB();
     
-    public HasilKonsultasi(String resultHasilDiagnosa ) {
+    public HasilDiagnosa(String namaPengguna, String nomorTlpnUsers, String gejala, String resultDiagnosa,String solusi,String imgParts,String pertanyaanTerpilih) {
         initComponents();
-        resultDiagnosa = resultHasilDiagnosa;
-        labelResult.setText(resultDiagnosa);
+        labelNamaPengguna.setText(namaPengguna);
+        txtNomorTlpn.setText(nomorTlpnUsers);
+        txtGejala.setText(gejala);
+        labelResultDiagnosa.setText(resultDiagnosa);
+        textAreaPertanyaan.setText(pertanyaanTerpilih);
+        txtAreaSolusiKerusakan.setText(solusi);
+        ImageIcon imageIcon = new ImageIcon(imgParts);
+        jLabelImgParts.setIcon(imageIcon);
     }
 
-    HasilKonsultasi() {
+    HasilDiagnosa() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
+
+    
 
 
     /**
@@ -66,94 +56,235 @@ public class HasilKonsultasi extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        labelResult = new javax.swing.JLabel();
-        btnPrintResult = new javax.swing.JButton();
-        jLabel1 = new javax.swing.JLabel();
+        buttonGroup1 = new javax.swing.ButtonGroup();
         jPanel1 = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
-        btnUlangiKonsultasi = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
+        jPanel2 = new javax.swing.JPanel();
+        labelResultDiagnosa = new javax.swing.JLabel();
+        btnUlangi = new javax.swing.JButton();
+        btnPrintReport = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        txtAreaSolusiKerusakan = new javax.swing.JTextArea();
+        jLabelImgParts = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        labelNamaPengguna = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        textAreaPertanyaan = new javax.swing.JTextArea();
+        jLabel5 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        txtGejala = new javax.swing.JTextArea();
+        jLabel7 = new javax.swing.JLabel();
+        txtNomorTlpn = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-        getContentPane().add(labelResult, new org.netbeans.lib.awtextra.AbsoluteConstraints(439, 211, 520, 39));
-
-        btnPrintResult.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
-        btnPrintResult.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/printer.png"))); // NOI18N
-        btnPrintResult.setText("Print report");
-        btnPrintResult.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnPrintResultActionPerformed(evt);
-            }
-        });
-        getContentPane().add(btnPrintResult, new org.netbeans.lib.awtextra.AbsoluteConstraints(909, 381, -1, -1));
-
-        jLabel1.setFont(new java.awt.Font("sansserif", 1, 24)); // NOI18N
-        jLabel1.setText("Hasil Diagnosa Kerusakan");
-        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(476, 98, -1, -1));
 
         jPanel1.setBackground(new java.awt.Color(243, 242, 246));
+        jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jPanel3.setBackground(new java.awt.Color(116, 118, 97));
+        jPanel3.setBackground(new java.awt.Color(237, 235, 230));
 
-        btnUlangiKonsultasi.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
-        btnUlangiKonsultasi.setText("Ulangi konsultasi");
-        btnUlangiKonsultasi.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnUlangiKonsultasiActionPerformed(evt);
-            }
-        });
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/Report.gif"))); // NOI18N
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(btnUlangiKonsultasi, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 268, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                .addContainerGap(36, Short.MAX_VALUE)
+                .addComponent(jLabel1)
+                .addGap(34, 34, 34))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
-                .addComponent(btnUlangiKonsultasi, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 625, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                .addContainerGap(79, Short.MAX_VALUE)
+                .addComponent(jLabel1)
+                .addGap(71, 71, 71))
         );
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 977, Short.MAX_VALUE))
+        jPanel1.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 620, -1));
+
+        jPanel2.setBackground(new java.awt.Color(237, 235, 230));
+
+        labelResultDiagnosa.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        labelResultDiagnosa.setForeground(new java.awt.Color(55, 58, 58));
+
+        btnUlangi.setBackground(new java.awt.Color(237, 235, 230));
+        btnUlangi.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnUlangi.setForeground(new java.awt.Color(55, 58, 58));
+        btnUlangi.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/icons8-reset-20.png"))); // NOI18N
+        btnUlangi.setText("ulangi konsultasi");
+        btnUlangi.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnUlangi.setFocusable(false);
+        btnUlangi.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnUlangiActionPerformed(evt);
+            }
+        });
+
+        btnPrintReport.setBackground(new java.awt.Color(237, 235, 230));
+        btnPrintReport.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnPrintReport.setForeground(new java.awt.Color(55, 58, 58));
+        btnPrintReport.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/printer.png"))); // NOI18N
+        btnPrintReport.setText("Print report");
+        btnPrintReport.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnPrintReport.setFocusable(false);
+        btnPrintReport.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPrintReportActionPerformed(evt);
+            }
+        });
+
+        txtAreaSolusiKerusakan.setEditable(false);
+        txtAreaSolusiKerusakan.setColumns(20);
+        txtAreaSolusiKerusakan.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        txtAreaSolusiKerusakan.setForeground(new java.awt.Color(55, 58, 58));
+        txtAreaSolusiKerusakan.setRows(5);
+        txtAreaSolusiKerusakan.setFocusable(false);
+        jScrollPane1.setViewportView(txtAreaSolusiKerusakan);
+
+        jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(55, 58, 58));
+        jLabel2.setText("Nama  :");
+
+        labelNamaPengguna.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        labelNamaPengguna.setForeground(new java.awt.Color(55, 58, 58));
+
+        jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jLabel3.setForeground(new java.awt.Color(55, 58, 58));
+        jLabel3.setText("Penyebab Kerusakan :");
+
+        jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jLabel4.setForeground(new java.awt.Color(55, 58, 58));
+        jLabel4.setText("Pertanyaan terpilih :");
+
+        textAreaPertanyaan.setColumns(20);
+        textAreaPertanyaan.setRows(5);
+        textAreaPertanyaan.setFocusable(false);
+        jScrollPane2.setViewportView(textAreaPertanyaan);
+
+        jLabel5.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jLabel5.setForeground(new java.awt.Color(55, 58, 58));
+        jLabel5.setText("Solusi Kerusakan :");
+
+        jLabel6.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jLabel6.setForeground(new java.awt.Color(55, 58, 58));
+        jLabel6.setText("Gejala terpilih :");
+
+        txtGejala.setColumns(20);
+        txtGejala.setRows(5);
+        jScrollPane3.setViewportView(txtGejala);
+
+        jLabel7.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jLabel7.setForeground(new java.awt.Color(55, 58, 58));
+        jLabel7.setText("Nomor Telepon :");
+
+        txtNomorTlpn.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        txtNomorTlpn.setForeground(new java.awt.Color(55, 58, 58));
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel7)
+                            .addComponent(jLabel2))
+                        .addGap(41, 41, 41)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(txtNomorTlpn, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(labelNamaPengguna, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(jLabel4)
+                        .addGap(24, 24, 24)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 447, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addGroup(jPanel2Layout.createSequentialGroup()
+                            .addComponent(jLabel6)
+                            .addGap(58, 58, 58)
+                            .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 330, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGap(18, 18, 18)
+                            .addComponent(jLabelImgParts, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(jPanel2Layout.createSequentialGroup()
+                            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addComponent(jLabel3)
+                                .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.LEADING))
+                            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addGroup(jPanel2Layout.createSequentialGroup()
+                                    .addGap(136, 136, 136)
+                                    .addComponent(btnUlangi)
+                                    .addGap(18, 18, 18)
+                                    .addComponent(btnPrintReport))
+                                .addGroup(jPanel2Layout.createSequentialGroup()
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 446, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGroup(jPanel2Layout.createSequentialGroup()
+                                    .addGap(18, 18, 18)
+                                    .addComponent(labelResultDiagnosa, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))))
+                .addContainerGap(23, Short.MAX_VALUE))
         );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(67, 67, 67)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(labelNamaPengguna, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(txtNomorTlpn, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(29, 29, 29)
+                        .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 49, Short.MAX_VALUE)
+                        .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(77, 77, 77)
+                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(49, 49, 49)
+                        .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(159, 159, 159))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jScrollPane3)
+                            .addComponent(jLabelImgParts, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(18, 18, 18)
+                        .addComponent(labelResultDiagnosa, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(26, 26, 26)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(btnUlangi, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnPrintReport, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
 
-        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1245, 700));
+        jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(620, 0, 630, 700));
+
+        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1250, 700));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnPrintResultActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPrintResultActionPerformed
+    private void btnUlangiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUlangiActionPerformed
         // TODO add your handling code here:
-        try {
-          JasperReport jasperReport = JasperCompileManager.compileReport("C:\\Users\\ZULFA\\Documents\\NetBeansProjects\\taSistemPakarKerusakan\\src\\reportKerusakan.jrxml");
-          Map<String, Object> parameters = new HashMap<>();
-          JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, cn);
-          JasperViewer.viewReport(jasperPrint, false);
-        } catch (Exception e) {
-        }
-    }//GEN-LAST:event_btnPrintResultActionPerformed
-
-    private void btnUlangiKonsultasiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUlangiKonsultasiActionPerformed
-        // TODO add your handling code here:
-            int confirm = JOptionPane.showConfirmDialog(null, "Jika anda mengulangi konsultasi maka hasil report sebelumnya akan hilang, Anda yakin ingin mengulangi konsultasi?");
-            if(confirm == 0){
-            try {
-            String sql = "DELETE FROM konsultasi";
+         try {
+            String sql = "DELETE FROM hasil_diagnosa";
             st = cn.createStatement();
             st.executeUpdate(sql);
-            JOptionPane.showMessageDialog(null, "DATA BERHASIL DI DELETE");
 //            resetResult(resultDiagnosa);
             Konsultasi konsultasi = new Konsultasi();
             konsultasi.setVisible(true);
@@ -161,9 +292,18 @@ public class HasilKonsultasi extends javax.swing.JFrame {
             } catch (Exception e) {
               JOptionPane.showMessageDialog(null, e);
             }
-            }
-       
-    }//GEN-LAST:event_btnUlangiKonsultasiActionPerformed
+    }//GEN-LAST:event_btnUlangiActionPerformed
+
+    private void btnPrintReportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPrintReportActionPerformed
+        // TODO add your handling code here:
+        try {
+          JasperReport jasperReport = JasperCompileManager.compileReport("C:\\Users\\ZULFA\\Documents\\NetBeansProjects\\taSistemPakarKerusakan\\src\\reportHasilDiagnosa.jrxml");
+          Map<String, Object> parameters = new HashMap<>();
+          JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, cn);
+          JasperViewer.viewReport(jasperPrint, false);
+        } catch (Exception e) {
+        }
+    }//GEN-LAST:event_btnPrintReportActionPerformed
 
 //    public void resetResult(String resetDiagnosa){
 //        resetDiagnosa = "";
@@ -187,30 +327,48 @@ public class HasilKonsultasi extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(HasilKonsultasi.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(HasilDiagnosa.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(HasilKonsultasi.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(HasilDiagnosa.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(HasilKonsultasi.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(HasilDiagnosa.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(HasilKonsultasi.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(HasilDiagnosa.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new HasilKonsultasi().setVisible(true);
+                new HasilDiagnosa().setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnPrintResult;
-    private javax.swing.JButton btnUlangiKonsultasi;
+    private javax.swing.JButton btnPrintReport;
+    private javax.swing.JButton btnUlangi;
+    private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabelImgParts;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
-    public javax.swing.JLabel labelResult;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JLabel labelNamaPengguna;
+    public javax.swing.JLabel labelResultDiagnosa;
+    private javax.swing.JTextArea textAreaPertanyaan;
+    private javax.swing.JTextArea txtAreaSolusiKerusakan;
+    private javax.swing.JTextArea txtGejala;
+    private javax.swing.JLabel txtNomorTlpn;
     // End of variables declaration//GEN-END:variables
 }

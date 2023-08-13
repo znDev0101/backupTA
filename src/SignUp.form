@@ -180,7 +180,7 @@
             <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="3a" green="3a" red="37" type="rgb"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="Firstname"/>
+            <Property name="text" type="java.lang.String" value="Nama depan"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel4">
@@ -191,7 +191,7 @@
             <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="3a" green="3a" red="37" type="rgb"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="Lastname"/>
+            <Property name="text" type="java.lang.String" value="Nama belakang"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel5">
@@ -213,7 +213,7 @@
             <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="3a" green="3a" red="37" type="rgb"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="Phone number"/>
+            <Property name="text" type="java.lang.String" value="Nomor telepon"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel8">
@@ -253,13 +253,13 @@
         <Component class="javax.swing.JButton" name="btnSignUp">
           <Properties>
             <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-              <Color blue="3a" green="3a" red="37" type="rgb"/>
+              <Color blue="e6" green="eb" red="ed" type="rgb"/>
             </Property>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Segoe UI" size="14" style="1"/>
             </Property>
             <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-              <Color blue="e6" green="eb" red="ed" type="rgb"/>
+              <Color blue="3a" green="3a" red="37" type="rgb"/>
             </Property>
             <Property name="text" type="java.lang.String" value="Sign Up"/>
             <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
