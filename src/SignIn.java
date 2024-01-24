@@ -1,5 +1,4 @@
 
-import javax.swing.JOptionPane;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -55,7 +54,7 @@ public class SignIn extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/vespa1.jpg"))); // NOI18N
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/Mesin Vespa.jpg"))); // NOI18N
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -199,8 +198,7 @@ public class SignIn extends javax.swing.JFrame {
 
     private void btnSigninActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSigninActionPerformed
         // TODO add your handling code here:
-        
-         String username = txtUsername.getText();
+        String username = txtUsername.getText();
         String password = String.valueOf(txtPassword.getPassword());
         try{
         String sql = " SELECT * FROM data_admin WHERE username=? AND password=? ";
@@ -209,10 +207,10 @@ public class SignIn extends javax.swing.JFrame {
             pst.setString(2, password);
             rs = pst.executeQuery();
             if(rs.next()){
-                new MenuAdmin().show();
+                new HalamanAdmin().show();
                    this.dispose();
             }else{
-                JOptionPane.showMessageDialog(null, "Login Failed...");
+                JOptionPane.showMessageDialog(null, "Username atau Password Salah");
             }
         }catch(Exception e){
             JOptionPane.showMessageDialog(null, e);
@@ -228,7 +226,7 @@ public class SignIn extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-        new MenuUtama().show();
+        new HalamanBeranda().show();
         this.dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
 

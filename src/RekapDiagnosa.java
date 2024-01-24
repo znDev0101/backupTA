@@ -3,10 +3,21 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Locale;
+import java.util.Map;
 import java.util.Vector;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
+import net.sf.jasperreports.engine.JasperCompileManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.view.JasperViewer;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -28,6 +39,13 @@ public class RekapDiagnosa extends javax.swing.JFrame {
     ResultSet rs;
     PreparedStatement pst;
     Connection cn = database.kerusakandb.configDB();
+    
+    Calendar calendar = Calendar.getInstance();
+    SimpleDateFormat formatDay = new SimpleDateFormat("EEEE", new Locale("in","ID"));
+    String Hari = formatDay.format(calendar.getTime());
+    SimpleDateFormat dateFormat = new SimpleDateFormat("dd MMMM yyyy" ,new Locale("id","ID"));
+    String dateNow = dateFormat.format(new Date());
+    
     Vector originalTableModel;
     
     public RekapDiagnosa() {
@@ -54,6 +72,7 @@ public class RekapDiagnosa extends javax.swing.JFrame {
         btnHapus = new javax.swing.JButton();
         txtCariDataTable = new javax.swing.JTextField();
         btnCariData = new javax.swing.JButton();
+        btnReportRekapDiagnosa = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setSize(new java.awt.Dimension(1245, 500));
@@ -118,6 +137,18 @@ public class RekapDiagnosa extends javax.swing.JFrame {
             }
         });
 
+        btnReportRekapDiagnosa.setBackground(new java.awt.Color(237, 235, 230));
+        btnReportRekapDiagnosa.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnReportRekapDiagnosa.setForeground(new java.awt.Color(55, 58, 58));
+        btnReportRekapDiagnosa.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/printer.png"))); // NOI18N
+        btnReportRekapDiagnosa.setText("Report rekap diagnosa");
+        btnReportRekapDiagnosa.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnReportRekapDiagnosa.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnReportRekapDiagnosaActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -136,7 +167,10 @@ public class RekapDiagnosa extends javax.swing.JFrame {
                         .addGap(18, 18, 18)
                         .addComponent(btnCariData, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(btnHapus, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(jPanel1Layout.createSequentialGroup()
+                            .addComponent(btnHapus, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGap(68, 68, 68)
+                            .addComponent(btnReportRekapDiagnosa))
                         .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 955, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(99, 99, 99))
         );
@@ -157,7 +191,9 @@ public class RekapDiagnosa extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 375, Short.MAX_VALUE)
                 .addGap(18, 18, 18)
-                .addComponent(btnHapus, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnHapus, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnReportRekapDiagnosa, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(55, 55, 55))
         );
 
@@ -211,7 +247,7 @@ public class RekapDiagnosa extends javax.swing.JFrame {
     
     private void btnKembaliActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnKembaliActionPerformed
         // TODO add your handling code here:
-        new MenuAdmin().show();
+        new HalamanAdmin().show();
         this.dispose();
     }//GEN-LAST:event_btnKembaliActionPerformed
 
@@ -259,6 +295,18 @@ public class RekapDiagnosa extends javax.swing.JFrame {
         tampilDataTabel(cariDataTabel);
     }//GEN-LAST:event_btnCariDataActionPerformed
 
+    private void btnReportRekapDiagnosaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReportRekapDiagnosaActionPerformed
+        // TODO add your handling code here:
+        try {
+          JasperReport jasperReport = JasperCompileManager.compileReport("C:\\Users\\ZULFA\\Documents\\NetBeansProjects\\taSistemPakarKerusakan\\src\\reportRekapDiagnosa.jrxml");
+          Map<String, Object> parameters = new HashMap<>();
+          parameters.put("tanggal", Hari +", "+ dateNow);
+          JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, cn);
+          JasperViewer.viewReport(jasperPrint, false);
+        } catch (Exception e) {
+        }
+    }//GEN-LAST:event_btnReportRekapDiagnosaActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -299,6 +347,7 @@ public class RekapDiagnosa extends javax.swing.JFrame {
     private javax.swing.JButton btnCariData;
     private javax.swing.JButton btnHapus;
     private javax.swing.JButton btnKembali;
+    private javax.swing.JButton btnReportRekapDiagnosa;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane2;

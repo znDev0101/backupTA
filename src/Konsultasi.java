@@ -43,6 +43,13 @@ public class Konsultasi extends javax.swing.JFrame {
     String resultFinalKodeKerusakan = "";
     Connection cn = database.kerusakandb.configDB();
     
+    
+    Calendar calendar = Calendar.getInstance();
+    SimpleDateFormat formatDay = new SimpleDateFormat("EEEE", new Locale("in","ID"));
+    String Hari = formatDay.format(calendar.getTime());
+    SimpleDateFormat dateFormat = new SimpleDateFormat("dd MMMM yyyy" ,new Locale("id","ID"));
+    String dateNow = dateFormat.format(new Date());
+    
     public Konsultasi() {
         initComponents();
         labelCurrentDate.setText(nama);
@@ -412,7 +419,7 @@ public class Konsultasi extends javax.swing.JFrame {
         String Hari = formatDay.format(calendar.getTime());
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd MMMM yyyy" ,new Locale("id","ID"));
         String dateNow = dateFormat.format(new Date());
-       labelCurrentDate.setText(Hari +" ,"+ dateNow);
+       labelCurrentDate.setText(Hari +", "+ dateNow);
     }
     
     public void getCurrentTime(){
@@ -504,7 +511,7 @@ public class Konsultasi extends javax.swing.JFrame {
             }else if (kodeCiriKerusakan.contains("GK009") && kodeCiriKerusakan.contains("GK010")){
                 resultDiagnosa = "Kemungkinan Vespa anda Mengalami kerusakan '" + dataKerusakan.get(3) + "'";
                 solusiKerusakan = "Solusi yang tepat untuk mencegah kerusakan '" + dataKerusakan.get(3) + "' \n'" +resultSolusiKerusakan.get(3)+ "' ";
-                String imgPath = "src\\images\\seal_krukas.png";
+                String imgPath = "src\\images\\mangkok_kopling.png";
                 namaUser = txtNama.getText();
                 showResultDiagnosa(namaUser, nomorTlpnUsers , resultDiagnosa,solusiKerusakan,imgPath);
             }else if (kodeCiriKerusakan.contains("GK011") && kodeCiriKerusakan.contains("GK012") && kodeCiriKerusakan.contains("GK013") && kodeCiriKerusakan.contains("GK014")){
@@ -513,6 +520,38 @@ public class Konsultasi extends javax.swing.JFrame {
                 String imgPath = "src\\images\\karburator.png";
                 namaUser = txtNama.getText();
                 showResultDiagnosa(namaUser, nomorTlpnUsers , resultDiagnosa,solusiKerusakan,imgPath);
+            }else if (kodeCiriKerusakan.contains("GK015") && kodeCiriKerusakan.contains("GK016") && kodeCiriKerusakan.contains("GK017")){
+                resultDiagnosa = "Kemungkinan Vespa anda Mengalami kerusakan '" + dataKerusakan.get(5) + "'";
+                solusiKerusakan = "Solusi yang tepat untuk mencegah kerusakan '" + dataKerusakan.get(5) + "' \n'" +resultSolusiKerusakan.get(5)+ "' ";
+                String imgPath = "src\\images\\Platina_vespa.png";
+                namaUser = txtNama.getText();
+                showResultDiagnosa(namaUser, nomorTlpnUsers , resultDiagnosa,solusiKerusakan,imgPath);
+            }else if (kodeCiriKerusakan.contains("GK018") && kodeCiriKerusakan.contains("GK019")){
+                resultDiagnosa = "Kemungkinan Vespa anda Mengalami kerusakan '" + dataKerusakan.get(6) + "'";
+                solusiKerusakan = "Solusi yang tepat untuk mencegah kerusakan '" + dataKerusakan.get(6) + "' \n'" +resultSolusiKerusakan.get(6)+ "' ";
+                String imgPath = "src\\images\\Spul_vespa.png";
+                namaUser = txtNama.getText();
+                showResultDiagnosa(namaUser, nomorTlpnUsers , resultDiagnosa,solusiKerusakan,imgPath);
+            }else if (kodeCiriKerusakan.contains("GK020") && kodeCiriKerusakan.contains("GK021")){
+                resultDiagnosa = "Kemungkinan Vespa anda Mengalami kerusakan '" + dataKerusakan.get(7) + "'";
+                solusiKerusakan = "Solusi yang tepat untuk mencegah kerusakan '" + dataKerusakan.get(7) + "' \n'" +resultSolusiKerusakan.get(7)+ "' ";
+                String imgPath = "src\\images\\kampas_rem.png";
+                namaUser = txtNama.getText();
+                showResultDiagnosa(namaUser, nomorTlpnUsers , resultDiagnosa,solusiKerusakan,imgPath);
+            }else if (kodeCiriKerusakan.contains("GK022")){
+                resultDiagnosa = "Kemungkinan Vespa anda Mengalami kerusakan '" + dataKerusakan.get(8) + "'";
+                solusiKerusakan = "Solusi yang tepat untuk mencegah kerusakan '" + dataKerusakan.get(8) + "' \n'" +resultSolusiKerusakan.get(8)+ "' ";
+                String imgPath = "src\\images\\laher.png";
+                namaUser = txtNama.getText();
+                showResultDiagnosa(namaUser, nomorTlpnUsers , resultDiagnosa,solusiKerusakan,imgPath);
+            }else if (kodeCiriKerusakan.contains("GK023") && kodeCiriKerusakan.contains("GK024") && kodeCiriKerusakan.contains("GK025") && kodeCiriKerusakan.contains("GK026")){
+                resultDiagnosa = "Kemungkinan Vespa anda Mengalami kerusakan '" + dataKerusakan.get(9) + "'";
+                solusiKerusakan = "Solusi yang tepat untuk mencegah kerusakan '" + dataKerusakan.get(9) + "' \n'" +resultSolusiKerusakan.get(9)+ "' ";
+                String imgPath = "src\\images\\tromol.png";
+                namaUser = txtNama.getText();
+                showResultDiagnosa(namaUser, nomorTlpnUsers , resultDiagnosa,solusiKerusakan,imgPath);
+            }else{
+                JOptionPane.showMessageDialog(null, "Maaf karna keterbatasan basis pengetahuan dan aturan pada sistem pakar kami,\n diagnosa keruskaan tidak di ketahui");
             }
         } catch (Exception e) {
              JOptionPane.showMessageDialog(null, e);
@@ -565,7 +604,7 @@ public class Konsultasi extends javax.swing.JFrame {
 
     private void btnKembaliActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnKembaliActionPerformed
         // TODO add your handling code here:
-        new MenuUtama().show();
+        new HalamanBeranda().show();
         this.dispose();
     }//GEN-LAST:event_btnKembaliActionPerformed
 
@@ -615,7 +654,7 @@ public class Konsultasi extends javax.swing.JFrame {
         
         insertRekapDiagnosa(namaUser, nomorTlpnUser, resultGejala,resultDiagnosa, solusi);
         insertHasilDiagnosa(namaUser, nomorTlpnUser, resultGejala,resultDiagnosa, solusi);
-        HasilDiagnosa hasil = new HasilDiagnosa(namaUser , nomorTlpnUser , resultGejala , resultDiagnosa,solusi,imgParts, editPertanyaanKonsultasi);
+        HasilDiagnosa hasil = new HasilDiagnosa(namaUser , nomorTlpnUser , resultGejala , resultDiagnosa,solusi,imgParts, editPertanyaanKonsultasi,Hari,dateNow);
         hasil.setVisible(true);
         this.dispose();
     }

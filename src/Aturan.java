@@ -1506,10 +1506,10 @@ public class Aturan extends javax.swing.JFrame {
     private void btnKembaliActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnKembaliActionPerformed
         // TODO add your handling code here:
         if(isBool == 0){
-            new MenuUtama().show();
+            new HalamanBeranda().show();
             this.dispose();
         }else{
-            new MenuAdmin().show();
+            new HalamanAdmin().show();
             this.dispose();
         }
     }//GEN-LAST:event_btnKembaliActionPerformed

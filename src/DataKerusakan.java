@@ -348,8 +348,8 @@ public class DataKerusakan extends javax.swing.JFrame {
             st.executeUpdate(sql);
             JOptionPane.showMessageDialog(null, "Data Berhasil di hapus");
             reset();
-            setColumnWidth();
             showDataKerusakan();
+            setColumnWidth();
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e);
         }
@@ -377,7 +377,7 @@ public class DataKerusakan extends javax.swing.JFrame {
 
     private void btnKembaliActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnKembaliActionPerformed
         // TODO add your handling code here:
-        new MenuAdmin().show();
+        new HalamanAdmin().show();
         this.dispose();
     }//GEN-LAST:event_btnKembaliActionPerformed
 
@@ -385,10 +385,10 @@ public class DataKerusakan extends javax.swing.JFrame {
         DefaultTableModel model =  (DefaultTableModel) tabelDataKerusakan.getModel();
         model.setRowCount(0);
         for(Object rows : originalTableModel ){
-            Vector rowVector = (Vector) rows;
-            for(Object column : rowVector){
-                if(column.toString().contains(cariData)){
-                    model.addRow(rowVector);
+        Vector rowVector = (Vector) rows;
+           for(Object column : rowVector){
+             if(column.toString().contains(cariData)){
+                   model.addRow(rowVector);
                     break;
                 }
             }

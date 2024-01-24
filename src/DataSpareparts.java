@@ -4,10 +4,24 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Locale;
+import java.util.Map;
 import java.util.Vector;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
+import net.sf.jasperreports.engine.JasperCompileManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.view.JasperViewer;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -32,10 +46,20 @@ public class DataSpareparts extends javax.swing.JFrame {
     Connection cn = database.kerusakandb.configDB();
     Vector originalTableModel;
     
+    ArrayList<String> totalPembelianSpareparts = new ArrayList<>();
+    ArrayList<Integer> intTotalPembelianSpareparts = new ArrayList<>();
+    Calendar calendar = Calendar.getInstance();
+    SimpleDateFormat formatDay = new SimpleDateFormat("EEEE", new Locale("in","ID"));
+    String Hari = formatDay.format(calendar.getTime());
+    SimpleDateFormat dateFormat = new SimpleDateFormat("dd MMMM yyyy" ,new Locale("id","ID"));
+    String dateNow = dateFormat.format(new Date());
+    
     public DataSpareparts() {
         initComponents();
         showDataSpareparts();
         setColumnWidth();
+        getAllHarga(); 
+        convertTotalPriceSpareparts(totalPembelianSpareparts);
         originalTableModel = (Vector) ((DefaultTableModel) tblSpareparts.getModel()).getDataVector().clone();
     }
 
@@ -66,6 +90,7 @@ public class DataSpareparts extends javax.swing.JFrame {
         txtAreaDetailParts = new javax.swing.JTextArea();
         txtCari = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
+        btnReportSpareparts = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -188,6 +213,18 @@ public class DataSpareparts extends javax.swing.JFrame {
         jLabel4.setForeground(new java.awt.Color(55, 58, 58));
         jLabel4.setText("Spareparts");
 
+        btnReportSpareparts.setBackground(new java.awt.Color(237, 235, 230));
+        btnReportSpareparts.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        btnReportSpareparts.setForeground(new java.awt.Color(55, 58, 58));
+        btnReportSpareparts.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/report.png"))); // NOI18N
+        btnReportSpareparts.setText("Report Spareparts");
+        btnReportSpareparts.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnReportSpareparts.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnReportSparepartsActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -202,12 +239,14 @@ public class DataSpareparts extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnReportSpareparts, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
                         .addComponent(btnHapus)
-                        .addGap(65, 65, 65)
+                        .addGap(18, 18, 18)
                         .addComponent(btnReset)
-                        .addGap(67, 67, 67)
+                        .addGap(18, 18, 18)
                         .addComponent(btnEdit)
-                        .addGap(78, 78, 78)
+                        .addGap(18, 18, 18)
                         .addComponent(btnSimpan))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addContainerGap(158, Short.MAX_VALUE)
@@ -266,8 +305,9 @@ public class DataSpareparts extends javax.swing.JFrame {
                     .addComponent(btnSimpan)
                     .addComponent(btnEdit)
                     .addComponent(btnReset)
-                    .addComponent(btnHapus))
-                .addContainerGap(65, Short.MAX_VALUE))
+                    .addComponent(btnHapus)
+                    .addComponent(btnReportSpareparts))
+                .addContainerGap(61, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -303,13 +343,14 @@ public class DataSpareparts extends javax.swing.JFrame {
         model.addColumn("Nama Spareparts");
         model.addColumn("Harga");
         model.addColumn("Detail Spareparts");
+        model.addColumn("Tanggal");
         tblSpareparts.setModel(model);
         try {
             st = cn.createStatement();
             String sql = "SELECT * FROM spareparts";
             rs = st.executeQuery(sql);
             while(rs.next()){
-                model.addRow(new Object[]{rs.getString("id") , rs.getString("nama_spareparts") , rs.getString("harga") , rs.getString("detail_parts")});
+                model.addRow(new Object[]{rs.getString("id") , rs.getString("nama_spareparts") , rs.getString("harga") , rs.getString("detail_parts"), rs.getString("tanggal")});
             }
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, "GAGAL MENAMPILKAN DATA");
@@ -333,9 +374,9 @@ public class DataSpareparts extends javax.swing.JFrame {
                 String sql = "DELETE FROM spareparts WHERE id = '" + id + "'";
                 st.executeUpdate(sql);
                 JOptionPane.showMessageDialog(null, "Data Berhasil di hapus");
-                reset();
                 showDataSpareparts();
                 setColumnWidth();
+                reset();
             } catch (Exception e) {
                 JOptionPane.showMessageDialog(null, e);
             }
@@ -372,19 +413,22 @@ public class DataSpareparts extends javax.swing.JFrame {
     private void btnSimpanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSimpanActionPerformed
         // TODO add your handling code here:
         String namaSpareparts = txtNamaSpareparts.getText();
-        String harga = "Rp " + txtHarga.getText();
+        String harga = txtHarga.getText();
         String detailParts = txtAreaDetailParts.getText();
+        LocalDate today = LocalDate.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy", new Locale("id,ID"));
+        String formateDate = today.format(formatter);
         
         if(harga.equals("") || namaSpareparts.equals("")){
             JOptionPane.showMessageDialog(null, "DATA TIDAK BOLEH KOSONG", "PERINGATAN" , JOptionPane.WARNING_MESSAGE);
         }else{
             try {
-                String sql = "INSERT INTO spareparts VALUES ( id,'" + namaSpareparts + "', '" + harga + "', '" + detailParts + "')";
+                String sql = "INSERT INTO spareparts VALUES ( id,'" + namaSpareparts + "', '" + harga + "', '" + detailParts + "', '" + formateDate + "')";
                 st = cn.createStatement();
                 st.executeUpdate(sql);
-                reset();
                 showDataSpareparts();
                 setColumnWidth();
+                reset();
                 JOptionPane.showMessageDialog(null, "DATA BERHASIL DI SIMPAN");
             } catch (Exception e) {
                 JOptionPane.showMessageDialog(null, "DATA GAGAL DI SIMPAN");
@@ -410,13 +454,68 @@ public class DataSpareparts extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-        new MenuAdmin().show();
+        new HalamanAdmin().show();
         this.dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void txtCariActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCariActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtCariActionPerformed
+
+    private void getAllHarga(){
+        try {
+            st = cn.createStatement();
+            rs = st.executeQuery("SELECT harga FROM spareparts");
+            while(rs.next()){
+                String totalPembayaranSpareparts = rs.getString("harga");
+                totalPembelianSpareparts.add(totalPembayaranSpareparts);
+            }
+            for(int i = 0; i < totalPembelianSpareparts.size(); i++){
+                String word = totalPembelianSpareparts.get(i);
+                StringBuilder modifiedWord = new StringBuilder();
+                for(int j = 0; j < word.length(); j++){
+                    char letter = word.charAt(j);
+                  if(!isVowel(letter)){
+                      modifiedWord.append(letter);
+                  }
+                }
+                totalPembelianSpareparts.set(i, modifiedWord.toString());
+            }
+        } catch (Exception e) {
+        }
+    }
+     
+   public static boolean isVowel(char letter) {
+        letter = Character.toLowerCase(letter);
+        return letter == 'r' || letter == 'p' || letter == '.';
+    }
+   
+   public void convertTotalPriceSpareparts (ArrayList<String> values){
+       for(String value : values){
+           String valueStr = value.trim();
+           int valueInt = Integer.parseInt(String.valueOf(valueStr));
+           intTotalPembelianSpareparts.add(valueInt);
+       }
+   }
+ 
+    private void btnReportSparepartsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReportSparepartsActionPerformed
+        // TODO add your handling code here:
+        try {
+          
+          int costSpareparts = 0;
+          for(Integer value : intTotalPembelianSpareparts){
+              costSpareparts += value;
+          }
+          String totalCostSpareparts = String.valueOf("Rp " + costSpareparts);
+          JasperReport jasperReport = JasperCompileManager.compileReport("C:\\Users\\ZULFA\\Documents\\NetBeansProjects\\taSistemPakarKerusakan\\src\\reportDataPemasukanSpareparts.jrxml");
+          Map<String, Object> parameters = new HashMap<>();
+          parameters.put("totalCostSpareparts", totalCostSpareparts);
+          parameters.put("tanggal",Hari +", "+ dateNow);
+          JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, cn);
+          JasperViewer.viewReport(jasperPrint, false);
+        } catch (Exception e) {
+        }
+    }//GEN-LAST:event_btnReportSparepartsActionPerformed
 
      private void tampilDataTabel(String cariData){
         DefaultTableModel model =  (DefaultTableModel) tblSpareparts.getModel();
@@ -471,6 +570,7 @@ public class DataSpareparts extends javax.swing.JFrame {
     private javax.swing.JButton btnCari;
     private javax.swing.JButton btnEdit;
     private javax.swing.JButton btnHapus;
+    private javax.swing.JButton btnReportSpareparts;
     private javax.swing.JButton btnReset;
     private javax.swing.JButton btnSimpan;
     private javax.swing.JButton jButton1;

@@ -12,6 +12,7 @@
 
 
 import java.sql.*;
+import static java.sql.Statement.RETURN_GENERATED_KEYS;
 import javax.swing.JOptionPane;
 
 public class SignUp extends javax.swing.JFrame {
@@ -42,8 +43,8 @@ public class SignUp extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
@@ -91,13 +92,13 @@ public class SignUp extends javax.swing.JFrame {
         jLabel3.setForeground(new java.awt.Color(55, 58, 58));
         jLabel3.setText("Nama depan");
 
-        jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jLabel4.setForeground(new java.awt.Color(55, 58, 58));
-        jLabel4.setText("Nama belakang");
-
         jLabel5.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel5.setForeground(new java.awt.Color(55, 58, 58));
         jLabel5.setText("Email");
+
+        jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jLabel4.setForeground(new java.awt.Color(55, 58, 58));
+        jLabel4.setText("Nama belakang");
 
         jLabel6.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel6.setForeground(new java.awt.Color(55, 58, 58));
@@ -233,17 +234,18 @@ public class SignUp extends javax.swing.JFrame {
         String Username = txtUserName.getText();
         String Pass = String.valueOf(txtPassword.getPassword());
         String ConfirmPass = String.valueOf(txtRePassword.getPassword());
-        String sql = "INSERT INTO data_admin (`nama_depan`,`nama_belakang`,`nomor_telepon`,`email`,`username`,`password`) VALUES(?,?,?,?,?,?)";
         String cekUsername = "SELECT * FROM data_admin WHERE username= '"+ Username +"' ";
         try{
             st = cn.createStatement();
-            pst = cn.prepareStatement(sql);
+            pst = cn.prepareStatement("INSERT INTO data_admin (`nama_depan`,`nama_belakang`,`nomor_telepon`,`email`,`username`,`password`) VALUES(?,?,?,?,?,?)",Statement.RETURN_GENERATED_KEYS);
             pst.setString(1, Firstname);
             pst.setString(2, Lastname);
             pst.setString(3, PhoneNumber);
             pst.setString(4, Email);
             pst.setString(5, Username);
             pst.setString(6, Pass);
+            ResultSet tableId = pst.getGeneratedKeys();
+            tableId.next();
             rs = st.executeQuery(cekUsername);
             if(rs.next()){
                 JOptionPane.showMessageDialog(null, "USERNAME INI SUDAH DI GUNAKAN", "GAGAL", JOptionPane.INFORMATION_MESSAGE);
@@ -253,12 +255,23 @@ public class SignUp extends javax.swing.JFrame {
                  JOptionPane.showMessageDialog(null, "Re Type Password tidak valid", "PASSWORD GAGAL", JOptionPane.INFORMATION_MESSAGE);
             }else if(pst.executeUpdate()>0){
                 JOptionPane.showMessageDialog(null, "SUCCESS ACCOUNT");
+                resetForm();
             }
         }catch(Exception e){
             JOptionPane.showMessageDialog(null, e);
         }
     }//GEN-LAST:event_btnSignUpActionPerformed
 
+    private void resetForm(){
+        txtEmail.setText("");
+        txtFirstName.setText("");
+        txtLastName.setText("");
+        txtPassword.setText("");
+        txtRePassword.setText("");
+        txtPhoneNumber.setText("");
+        txtUserName.setText("");
+        
+    }
     private void jLabel10MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel10MouseClicked
         // TODO add your handling code here:
         new SignIn().show();

@@ -27,9 +27,12 @@ public class HasilDiagnosa extends javax.swing.JFrame {
    Statement st;
    ResultSet rs;
    Connection cn = database.kerusakandb.configDB();
-    
-    public HasilDiagnosa(String namaPengguna, String nomorTlpnUsers, String gejala, String resultDiagnosa,String solusi,String imgParts,String pertanyaanTerpilih) {
+   
+   String hariFormartIDN;
+   
+    public HasilDiagnosa(String namaPengguna, String nomorTlpnUsers, String gejala, String resultDiagnosa,String solusi,String imgParts,String pertanyaanTerpilih,String hari,String tanggal) {
         initComponents();
+        getDateNow(hari, tanggal);
         labelNamaPengguna.setText(namaPengguna);
         txtNomorTlpn.setText(nomorTlpnUsers);
         txtGejala.setText(gejala);
@@ -41,6 +44,7 @@ public class HasilDiagnosa extends javax.swing.JFrame {
     }
 
     HasilDiagnosa() {
+        this.hariFormartIDN = "";
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
@@ -176,6 +180,7 @@ public class HasilDiagnosa extends javax.swing.JFrame {
         jLabel6.setForeground(new java.awt.Color(55, 58, 58));
         jLabel6.setText("Gejala terpilih :");
 
+        txtGejala.setEditable(false);
         txtGejala.setColumns(20);
         txtGejala.setRows(5);
         jScrollPane3.setViewportView(txtGejala);
@@ -294,11 +299,17 @@ public class HasilDiagnosa extends javax.swing.JFrame {
             }
     }//GEN-LAST:event_btnUlangiActionPerformed
 
+    private String getDateNow(String hari, String tanggal){
+        hariFormartIDN = hari + ", " + tanggal;
+        return hariFormartIDN;
+    }
+    
     private void btnPrintReportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPrintReportActionPerformed
         // TODO add your handling code here:
         try {
           JasperReport jasperReport = JasperCompileManager.compileReport("C:\\Users\\ZULFA\\Documents\\NetBeansProjects\\taSistemPakarKerusakan\\src\\reportHasilDiagnosa.jrxml");
           Map<String, Object> parameters = new HashMap<>();
+          parameters.put("tanggal", hariFormartIDN);
           JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, cn);
           JasperViewer.viewReport(jasperPrint, false);
         } catch (Exception e) {
